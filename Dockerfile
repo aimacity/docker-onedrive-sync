@@ -2,21 +2,22 @@
 
 FROM dlanguage/dmd as dmd
 
-RUN apt-get update \
-  && apt-get install -y git make libcurl4-openssl-dev libsqlite3-dev \
-  && git clone https://github.com/abraunegg/onedrive.git \
+RUN apt-get update && apt-get install -y git make libcurl4-openssl-dev libsqlite3-dev  pkg-config
+
+RUN   git clone https://github.com/abraunegg/onedrive.git \
   && cd onedrive \
+  && ./configure \
   && make \
   && make install
 
-
 # Primary image
-FROM oznu/s6-debian:latest
+FROM aimacity/s6-debian:latest
 
 RUN apt-get update \
-  && apt-get install -y libcurl4-openssl-dev libsqlite3-dev \
-  && mkdir /documents \
-  && chown abc:abc /documents
+  && apt-get install -y gosu libcurl3 libsqlite3-0 \
+  && apt-get autoremove &&  apt clean \
+  && mkdir  -p /OneDrive \
+  && chown aima:aima /OneDrive
 
 COPY --from=dmd /usr/local/bin/onedrive /usr/local/bin/onedrive
 COPY root /

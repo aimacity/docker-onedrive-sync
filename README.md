@@ -19,11 +19,21 @@ To allow you to copy the URI back into the docker container you need to launch i
 
 
 ```shell
+mkdir  onedrive
+cat > ./onedrive/config <<'EOF'
+# Directory where the files will be synced
+sync_dir = "/OneDrive"
+# Skip files and directories that match this pattern
+skip_file = "~*|.~*|*.tmp"
+EOF
 docker run -it \
   -e PUID=$(id -u) -e PGID=$(id -g) \
-  -v </path/to/config>:/config \
-  -v </path/to/documents>:/documents \
-  oznu/onedrive
+  -e TZ="Asia/Shanghai" \
+  --restart always \
+ --name onedrive \
+  -v  ~/onedrive:/config \
+  -v  ~/OneDrive:/OneDrive \
+  aimacity/onedrive
 ```
 
 Once authenticated you can stop the sync process and restart the container in non-interactive mode.
@@ -34,9 +44,10 @@ Once authenticated you can stop the sync process and restart the container in no
 docker run \
   -e PUID=<UID> -e PGID=<GID> \
   -e TZ=<timezone> \
+  --restart always \
   -v </path/to/config>:/config \
-  -v </path/to/documents>:/documents \
-  oznu/onedrive
+  -v </path/to/documents>:/OneDrive \
+  aimacity/onedrive
 ```
 
 ## Parameters
@@ -58,15 +69,15 @@ If you prefer to use [Docker Compose](https://docs.docker.com/compose/):
 version: '2'
 services:
   onedrive:
-    image: oznu/onedrive
+    image: aimacity/onedrive
     restart: always
     environment:
-      - TZ=Australia/Sydney
-      - PGID=911
-      - PUID=911
+      - TZ=Asia/Shanghai
+      - PGID=1000
+      - PUID=1000
     volumes:
       - ./config:/config
-      - /home/oznu:/documents
+      - ./OneDrive:/OneDrive
 ```
 
 To authenticate with your Microsoft account for the first time run (this will start the container in interactive mode):

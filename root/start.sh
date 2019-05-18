@@ -36,4 +36,4 @@ fi
 
 echo "Starting onedrive client..."
 
-s6-setuidgid abc onedrive --monitor --confdir=/config --syncdir=/documents --verbose=${VERBOSE}
+s6-setuidgid aima onedrive --monitor --confdir=/config --syncdir=/OneDrive --verbose=${VERBOSE}
