@@ -11,8 +11,6 @@ This Docker image powered by [abraunegg/onedrive](https://github.com/abraunegg/o
 
 ## Setup - First Run
 
-[![asciicast](https://asciinema.org/a/jUXikuR4MHHHTgLBypWDKB6Vu.png)](https://asciinema.org/a/jUXikuR4MHHHTgLBypWDKB6Vu)
-
 When first launching the container you will need to authenticate with your Microsoft account. The procedure requires a web browser. You will be asked to open a specific link where you will have to login into your Microsoft Account and give the application the permission to access your files. After giving the permission, you will be redirected to a blank page. Copy the URI of the blank page into the application.
 
 To allow you to copy the URI back into the docker container you need to launch it in interactive mode, this can be done using the `-it` flag.
@@ -55,7 +53,7 @@ docker run \
 The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
 
 * `-v /config` - This is where the OneDrive Client will store it's config. See [abraunegg/onedrive#configuration](https://github.com/abraunegg/onedrive#configuration)
-* `-v /documents` - This is the folder that will be synced with OneDrive
+* `-v /OneDrive` - This is the folder that will be synced with OneDrive
 * `-e TZ` - for [timezone information](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) e.g. `-e TZ=Europe/London`
 * `-e PGID` - for GroupID - This should match the GID of the user who owns the local files
 * `-e PUID` - for UserID - This should match the UID of the user who owns the local files
